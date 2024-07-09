@@ -1,0 +1,16 @@
+for this first we are going to need to have a surface with the text the user is supposed to be typing out
+
+
+Next we are going to need to take User Input.
+
+
+The Next step after that is we are going to need to be able to find a way to manipulate that input.
+
+
+After that we are going to need to find a way to check the text of the paragraph against the User Input.
+
+
+Then we are going to need to find a way to change the look of the paragraph based on that user input.
+
+
+Then were pretty much done, to finish it off we can add states like starting state and ending states to our project.
