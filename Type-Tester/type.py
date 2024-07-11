@@ -19,8 +19,13 @@ my_font = pygame.font.SysFont('Comic Sans MS', 20)
 new_text = wrapline(text,my_font,1000)
 Paragraph = my_font.render(f"{text}",True,"white",wraplength=900)
 
+#Score 
+speed = 0
+#Text rectangles and rendering
 start_screen = my_font.render("START TYPE RACER",True,"white",wraplength=900)
 space = my_font.render("Press ANY KEY to Play",True,"white",wraplength=900)
+type_speed = my_font.render(f"Type Speed: {speed} ",True,"white",wraplength=900)
+type_speed_rect = type_speed.get_rect(center=(500,800))
 start_screen_rect = start_screen.get_rect(center=(500,100))
 space_rect = space.get_rect(center=(500,800))
 # pygame setup
@@ -46,7 +51,7 @@ while running:
         screen.fill("black")
         # write text 
         screen.blit(Paragraph,(0,0))
-        
+        screen.blit(type_speed,type_speed_rect) 
 
         #keys 
         keys = pygame.key.get_pressed()
@@ -58,10 +63,20 @@ while running:
         if event.type == pygame.KEYDOWN and start == True:
              start = False
         if event.type == pygame.KEYDOWN:
-            print("Avacado")
-            for texts in new_text:
-                for letters in texts:
-                        ...
+            if event.key and start == False:
+                for letter in text:
+                    #checking if it is a space or a capital letter 
+                    if letter != " " or letter != letter.upper():
+                        #then checking if letter is equal to event.key
+                        if letter == pygame.key.name(event.key):
+                            print("Green")
+                        else:
+                            print("red")
+                            
+                       
+                print(pygame.key.name(event.key))
+           
+
       
             
 
