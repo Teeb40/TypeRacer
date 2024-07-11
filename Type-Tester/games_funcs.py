@@ -66,3 +66,25 @@ def wrap_multi_line(text, font, maxwidth):
     return list(lines)
 
 
+#check if shift has been pressed
+shift_number_map = {
+    '1': '!',
+    '2': '@',
+    '3': '#',
+    '4': '$',
+    '5': '%',
+    '6': '^',
+    '7': '&',
+    '8': '*',
+    '9': '(',
+    '0': ')'
+}
+
+def get_key_character(event, shift_pressed):
+    key_name = pygame.key.name(event.key)
+    
+    if shift_pressed and key_name in shift_number_map:
+        return shift_number_map[key_name]
+    return key_name
+
+

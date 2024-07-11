@@ -2,7 +2,7 @@ import time
 
 #Imports and Technicalities
 import pygame
-from games_funcs import generate_paragraph,wrapline
+from games_funcs import generate_paragraph,wrapline,get_key_character,shift_number_map
 
 
 pygame.font.init()
@@ -34,7 +34,7 @@ screen = pygame.display.set_mode((1000, 1000))
 clock = pygame.time.Clock()
 running = True
 pygame.display.set_caption('Type Racer')
-
+shift_pressed = False
 start = True
 
 
@@ -55,6 +55,7 @@ while running:
 
         #keys 
         keys = pygame.key.get_pressed()
+        mods = pygame.key.get_mods()
         # poll for events
         # pygame.QUIT event means the user clicked X to close your window
     for event in pygame.event.get():
@@ -62,20 +63,51 @@ while running:
             running = False
         if event.type == pygame.KEYDOWN and start == True:
              start = False
-        if event.type == pygame.KEYDOWN:
-            if event.key and start == False:
-                for letter in text:
-                    #checking if it is a space or a capital letter 
-                    if letter != " " or letter != letter.upper():
-                        #then checking if letter is equal to event.key
-                        if letter == pygame.key.name(event.key):
-                            print("Green")
+             user_input = []
+             count = 0
+        elif start == False:
+            if event.type == pygame.KEYDOWN:
+        #each item in a list has a numerical value
+                length = len(text)
+                #have a list with what the user has typed 
+                if event.key:
+                        
+                        if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:
+                            shift_pressed = True
                         else:
-                            print("red")
-                            
+                            if pygame.key.name(event.key).lower() == "caps lock":
+                                count +=1
+                            if pygame.key.name(event.key).lower() == "backspace":
+                                try: 
+                                    user_input.pop()
+                                except IndexError:
+                                    pass
+                            if pygame.key.name(event.key).lower() == "space":
+                                user_input.append(" ")
+                        
+                            else:
+                                _ = get_key_character(event,shift_pressed)
+                                if _.isalpha() == False and _.isdigit() == False and len(_) < 2:
+                                    user_input.append(_)
+                                
+                            statement = len(pygame.key.name(event.key)) > 2 
+                            if statement == False: 
+                                if (count % 2) == 0:
+                                    user_input.append(pygame.key.name(event.key))
+                                else: user_input.append(pygame.key.name(event.key).upper())
+                            else:
+                                print("True",statement)
+                        print(user_input)
+                #compare it to the text
+                #if user pressed backspace remove items from list
+                #special characters should be added to the list differently.
+            #we can add plus 1 to get the next numerical value
+            #if we hit the end of the list we will know because plus 1 will give us an index Error
                        
                 print(pygame.key.name(event.key))
-           
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:
+                    shift_pressed = False
 
       
             
