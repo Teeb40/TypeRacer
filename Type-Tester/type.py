@@ -8,7 +8,7 @@ pygame.init()
 # Constants
 WINDOW_WIDTH = 1000
 WINDOW_HEIGHT = 1000
-FONT_SIZE = 20
+FONT_SIZE = 30
 LINE_HEIGHT = FONT_SIZE + 5
 
 
