@@ -11,14 +11,13 @@ WINDOW_HEIGHT = 1000
 FONT_SIZE = 20
 LINE_HEIGHT = FONT_SIZE + 5
 
-# Generate text for the game
-text = generate_paragraph()
+
 
 # Initialize fonts
 my_font = pygame.font.SysFont('Comic Sans MS', FONT_SIZE)
 
-# Wrap the text
-wrapped_text = wrapline(text, my_font, WINDOW_WIDTH - 20)
+# # Wrap the text
+# wrapped_text = wrapline(text, my_font, WINDOW_WIDTH - 20)
 
 # Score
 speed = 0
@@ -42,18 +41,23 @@ start = True
 colour = {}
 user_input = []
 count = 0
-
+game_over = False
 while running:
+    mouse = pygame.mouse.get_pos()
     # Poll for events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.KEYDOWN and start:
+            # Generate text for the game
+            text = generate_paragraph()
             start = False
             user_input = []
             count = 0
             char_count = 0
             acc_char_count = 0
+            checker = 0
+            colour = {}
         elif not start:
             if event.type == pygame.KEYDOWN:
                 char_count += 1 
@@ -67,6 +71,8 @@ while running:
                     elif key_name == "backspace":
                         if user_input:
                             user_input.pop()
+                            if char_count <= 0: pass
+                            else: char_count -=1
                     elif key_name == "space":
                         user_input.append(" ")
                     else:
@@ -91,9 +97,12 @@ while running:
     if start:
         screen.blit(start_screen, start_screen_rect)
         screen.blit(space, space_rect)
-    else:
+      
+
+    elif not start and not game_over:
+        
         #timer
-        time_ = int(round(pygame.time.get_ticks()/1200,0))
+        time_ = int(round((pygame.time.get_ticks()/1000)/60,0))
         # Compare user input to the text and display it on screen
         colour = {}
         for i, letter in enumerate(text):
@@ -103,6 +112,7 @@ while running:
                     acc_char_count +=1 
                 else:
                     colour[i] = "red"
+                    acc_char_count -=1
             else:
                 colour[i] = "white"  # Not yet typed
 
@@ -121,13 +131,40 @@ while running:
                 x_offset = 10
                 y_offset += LINE_HEIGHT
         try:
-            accuracy = (acc_char_count/char_count) * 100
-            speed = ((char_count/5)/time_) * (100 / accuracy)
+            speed = ((char_count/5)/time_)
         except ZeroDivisionError:
             pass
-        speed = ((char_count/5)/time_)
-        type_speed = my_font.render(f"Type Speed: {int(round(speed,0))}", True, "white")
+        
+        type_speed = my_font.render(f"Type Speed: {int(round(speed,0))} ('_' are Spaces)", True, "white")
         screen.blit(type_speed, type_speed_rect)
+        
+        #check if game is finished
+        if len(user_input) == len(text):
+            if "red" not in colour.values():
+                game_over = True
+            else:
+                pass
+
+    elif game_over:
+        
+        end = my_font.render("Text Complete", True, "white")
+        repeat = my_font.render("Try Again?", True, "white")
+        type_speed = my_font.render(f"Type Speed: {int(round(speed,0))}", True, "white")
+        repeat_rect = repeat.get_rect(center=(500,500))
+        end_rect = end.get_rect(center=(500,100))
+        screen.blit(end,end_rect)
+        screen.blit(repeat,repeat_rect)
+        screen.blit(type_speed, type_speed_rect)
+        
+        try:
+            speed = ((char_count/5)/time_)
+        except ZeroDivisionError:
+            pass
+        if repeat_rect.collidepoint(mouse) and event.type == pygame.MOUSEBUTTONDOWN:
+            game_over = False
+            start = True
+
+        
 
     # Flip the display to put your work on screen
     pygame.display.flip()

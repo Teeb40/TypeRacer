@@ -10,7 +10,7 @@ pygame.init()
 tokens = brown.words()
 bigrams = list(nltk.bigrams(tokens))
 cfd = nltk.ConditionalFreqDist(bigrams)
-
+range_ = random.randint(3,10)
 # Function to generate a random sentence using bigrams
 def generate_sentence(cfd, start_word, length=10):
     word = start_word
@@ -21,7 +21,7 @@ def generate_sentence(cfd, start_word, length=10):
     return ' '.join(sentence) + '.'
 
 # Function to generate a random paragraph
-def generate_paragraph(cfd=cfd, sentence_count=5, sentence_length=20):
+def generate_paragraph(cfd=cfd, sentence_count=range_, sentence_length=10):
     return ' '.join(generate_sentence(cfd, random.choice(list(cfd.keys())), sentence_length) for _ in range(sentence_count))
 
 
