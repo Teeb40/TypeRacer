@@ -52,8 +52,11 @@ while running:
             start = False
             user_input = []
             count = 0
+            char_count = 0
+            acc_char_count = 0
         elif not start:
             if event.type == pygame.KEYDOWN:
+                char_count += 1 
                 # Have a list with what the user has typed
                 if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:
                     shift_pressed = True
@@ -89,12 +92,15 @@ while running:
         screen.blit(start_screen, start_screen_rect)
         screen.blit(space, space_rect)
     else:
+        #timer
+        time_ = int(round(pygame.time.get_ticks()/1200,0))
         # Compare user input to the text and display it on screen
         colour = {}
         for i, letter in enumerate(text):
             if i < len(user_input):
                 if user_input[i] == letter:
                     colour[i] = "green"
+                    acc_char_count +=1 
                 else:
                     colour[i] = "red"
             else:
@@ -114,8 +120,13 @@ while running:
             if x_offset > WINDOW_WIDTH - 20 or letter == '\n':
                 x_offset = 10
                 y_offset += LINE_HEIGHT
-
-        type_speed = my_font.render(f"Type Speed: {speed}", True, "white")
+        try:
+            accuracy = (acc_char_count/char_count) * 100
+            speed = ((char_count/5)/time_) * (100 / accuracy)
+        except ZeroDivisionError:
+            pass
+        speed = ((char_count/5)/time_)
+        type_speed = my_font.render(f"Type Speed: {int(round(speed,0))}", True, "white")
         screen.blit(type_speed, type_speed_rect)
 
     # Flip the display to put your work on screen
