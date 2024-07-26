@@ -69,15 +69,26 @@ def wrap_multi_line(text, font, maxwidth):
 #check if shift has been pressed
 shift_number_map = {
     '1': '!',
-    '2': '@',
-    '3': '#',
+    '2': '"',
+    '3': '£',
     '4': '$',
     '5': '%',
     '6': '^',
     '7': '&',
     '8': '*',
     '9': '(',
-    '0': ')'
+    '0': ')',
+    ';': ':',
+    '/': '?',
+    '.': '>',
+    ',': '<',
+    '[': '{',
+    ']': '}',
+    "'": "@",
+    '#': "~",
+    '=': '+',
+    '-': '_'
+
 }
 
 def get_key_character(event, shift_pressed):

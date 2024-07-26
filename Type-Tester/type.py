@@ -16,8 +16,6 @@ LINE_HEIGHT = FONT_SIZE + 5
 # Initialize fonts
 my_font = pygame.font.SysFont('Comic Sans MS', FONT_SIZE)
 
-# # Wrap the text
-# wrapped_text = wrapline(text, my_font, WINDOW_WIDTH - 20)
 
 # Score
 speed = 0
